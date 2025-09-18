@@ -161,3 +161,32 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": True,
 }
+
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Project Nexus E-commerce API',
+    'DESCRIPTION': """
+A comprehensive API for the Project Nexus e-commerce backend. 
+This documentation provides detailed information about all available endpoints.
+
+### Authentication
+
+This API uses JWT (JSON Web Tokens) for authentication. To access protected endpoints, you must include an `Authorization` header with a valid token.
+
+**Authentication Flow:**
+
+1.  **Register a new user:**
+    - Use the `POST /api/v1/users/register/` endpoint.
+
+2.  **Obtain a token pair:**
+    - Use the `POST /api/v1/token/` endpoint with your new username and password.
+    - This will return an `access` and a `refresh` token.
+
+3.  **Authorize your requests:**
+    - Click the **Authorize** button at the top right of this page.
+    - In the dialog, enter `Bearer <your_access_token>` (e.g., `Bearer eyJhbGciOi...`).
+    - Click **Authorize** and then **Close**. All subsequent requests made from this page will now include the correct `Authorization` header.
+    """,
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
