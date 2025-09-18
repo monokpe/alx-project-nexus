@@ -1,0 +1,93 @@
+# Ignore the virtual environment directory
+venv/
+env/
+.venv/
+.env/
+
+# Ignore environment variable files
+.env
+.env.*
+!.env.example
+
+# --- Django ---
+# Ignore local settings files
+local_settings.py
+nexus/local_settings.py
+
+# Ignore SQLite databases
+*.sqlite3
+db.sqlite3
+
+# Ignore compiled Python files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore static and media files that are collected or uploaded locally
+/static/
+/media/
+
+# Ignore migration files from third-party apps you might add to INSTALLED_APPS
+# It's better to let them be created during installation on each environment
+*/migrations/0*.py
+!*/migrations/__init__.py
+
+# --- IDEs and Editors ---
+# Visual Studio Code
+.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# PyCharm
+.idea/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Atom
+.atom/
+
+# --- Testing and Coverage ---
+# Ignore test reports and coverage data
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+pytestdebug.log
+nosetests.xml
+coverage.xml
+
+# --- OS-specific files ---
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# --- Logs ---
+# Ignore log files
+*.log
+logs/
+
+# --- Build and Distribution ---
+# Ignore distribution artifacts
+build/
+dist/
+*.egg-info/
+*.egg
+
+# --- Miscellaneous ---
+# IPython/Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Docker-related files (if you use Docker locally for development)
+docker-compose.override.yml
+.dockerignore
