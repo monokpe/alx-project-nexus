@@ -4,6 +4,9 @@ from .models import Category, Product
 from .serializers import CategorySerializer, ProductSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
+# Import the caching mixin
+from drf_extensions.cache.mixins import CacheResponseMixin
+
 class CategoryViewSet(viewsets.ModelViewSet):
     """
     API endpoint for managing product categories.
@@ -17,7 +20,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-class ProductViewSet(viewsets.ModelViewSet):
+class ProductViewSet(CacheResponseMixin, viewsets.ModelViewSet):
     """
     API endpoint for managing products.
     
