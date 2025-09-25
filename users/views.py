@@ -4,6 +4,7 @@ from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 class RegisterView(generics.CreateAPIView):
@@ -15,6 +16,7 @@ class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = UserSerializer
+    throttle_scope = 'auth'
 
 class ProtectedView(APIView):
     """
@@ -27,3 +29,9 @@ class ProtectedView(APIView):
     def get(self, request):
         return Response({"message": "Hello, you are authenticated!"})
     
+class CustomTokenObtainPairView(TokenObtainPairView):
+    """
+    Custom token obtain view with stricter rate limiting.
+    """
+    throttle_scope = 'auth'
+
