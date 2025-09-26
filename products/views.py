@@ -5,7 +5,7 @@ from .serializers import CategorySerializer, ProductSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 # Import the caching mixin
-from drf_extensions.cache.mixins import CacheResponseMixin
+from rest_framework_extensions.cache.mixins import CacheResponseMixin
 
 class CategoryViewSet(viewsets.ModelViewSet):
     """

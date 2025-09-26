@@ -91,3 +91,6 @@ dist/
 # Docker-related files (if you use Docker locally for development)
 docker-compose.override.yml
 .dockerignore
+
+# LLM context file
+llm.txt

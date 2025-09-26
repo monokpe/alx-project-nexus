@@ -71,7 +71,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "django_filters",
     "drf_spectacular",
-    "drf_extensions",
+    "rest_framework_extensions",
     # Local apps
     "users",
     "products",
