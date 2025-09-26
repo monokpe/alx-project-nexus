@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 from django.core.management.utils import get_random_secret_key
 
 # Load SECRET_KEY from environment or generate for dev, error in production if missing
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = os.getenv("SECRET_KEY", 'django-insecure-default-key-for-dev')
 if not SECRET_KEY:
     if os.getenv("DJANGO_ENV") == "production":
         raise RuntimeError("SECRET_KEY environment variable must be set in production!")
@@ -104,11 +104,11 @@ DATABASES = {
     }
 }
 
-
+REDIS_HOST = os.environ.get('REDIS_HOST', '127.0.0.1')
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1", # Use database #1 for caching
+        "LOCATION": f"redis://{REDIS_HOST}:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
