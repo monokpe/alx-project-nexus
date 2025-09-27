@@ -27,9 +27,6 @@ __pycache__/
 /static/
 /media/
 
-# Ignore migration files from third-party apps you might add to INSTALLED_APPS
-# It's better to let them be created during installation on each environment
-*/migrations/0*.py
 !*/migrations/__init__.py
 
 # --- IDEs and Editors ---
