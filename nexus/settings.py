@@ -114,7 +114,7 @@ WSGI_APPLICATION = "nexus.wsgi.application"
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=env('DB_URL', default=f"postgres://{os.environ.get('POSTGRES_USER')}:{os.environ.get('POSTGRES_PASSWORD')}@localhost/nexus_db")
+        default=env('DB_URL', default=f"postgres://{env('POSTGRES_USER')}:{env('POSTGRES_PASSWORD')}@{env('DB_HOST')}/{env('POSTGRES_DB')}")
     )
 }
 
