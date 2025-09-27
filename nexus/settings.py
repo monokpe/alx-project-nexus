@@ -133,6 +133,17 @@ if 'test' in sys.argv or os.environ.get('GITHUB_ACTIONS'):
         }
     }
 
+    # Use dummy cache for testing
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        }
+    }
+
+    # Disable throttling for testing
+    REST_FRAMEWORK['DEFAULT_THROTTLE_CLASSES'] = []
+    REST_FRAMEWORK['DEFAULT_THROTTLE_RATES'] = {}
+
 REDIS_HOST = os.environ.get('REDIS_HOST', '127.0.0.1')
 CACHES = {
     "default": {
