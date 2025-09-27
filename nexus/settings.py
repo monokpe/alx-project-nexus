@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 import os
+import sys
 from dotenv import load_dotenv
 from datetime import timedelta
 from pathlib import Path
@@ -123,6 +124,13 @@ DATABASES = {
         "PORT": os.getenv("DB_PORT"),
     }
 }
+
+# Use SQLite for testing
+if 'test' in sys.argv or os.environ.get('GITHUB_ACTIONS'):
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': ':memory:'
+    }
 
 REDIS_HOST = os.environ.get('REDIS_HOST', '127.0.0.1')
 CACHES = {
