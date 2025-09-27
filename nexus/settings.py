@@ -46,9 +46,9 @@ DEBUG = os.getenv("DJANGO_ENV") != "production"
 # Update ALLOWED_HOSTS
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1'])
 
+if not DEBUG:
     # Production security settings
     SECURE_SSL_REDIRECT = True
-
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_HSTS_SECONDS = 3600  # e.g., 1 hour, increase as needed
