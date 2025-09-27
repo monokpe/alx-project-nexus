@@ -20,6 +20,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 FROM python:3.11-slim-bookworm
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+
+# Install postgresql-client to make pg_isready available.
+RUN apt-get update && apt-get install -y postgresql-client --no-install-recommends && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 # Create a non-root user for security
