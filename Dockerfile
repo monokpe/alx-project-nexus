@@ -36,7 +36,10 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 # Copy the application code
 COPY . .
 
-# Change ownership of files to the non-root user
+# Create the staticfiles directory and run collectstatic as root
+RUN mkdir -p /app/staticfiles && python manage.py collectstatic --no-input
+
+# Change ownership of all files to the non-root user
 RUN chown -R appuser:appuser /app
 
 # Switch to the non-root user
