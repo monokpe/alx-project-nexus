@@ -36,10 +36,6 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 # Copy the application code
 COPY . .
 
-# Run collectstatic to gather all static files
-# The --noinput flag is important for non-interactive builds
-RUN python manage.py collectstatic --noinput
-
 # Change ownership of files to the non-root user
 RUN chown -R appuser:appuser /app
 
