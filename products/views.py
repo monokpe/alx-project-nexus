@@ -1,3 +1,4 @@
+import logging # Import the logging library at the top
 from rest_framework import viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Category, Product
@@ -6,6 +7,9 @@ from .permissions import IsAdminOrReadOnly
 
 # Import the caching mixin
 from rest_framework_extensions.cache.mixins import CacheResponseMixin
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 class CategoryViewSet(viewsets.ModelViewSet):
     """
@@ -48,3 +52,13 @@ class ProductViewSet(CacheResponseMixin, viewsets.ModelViewSet):
     search_fields = ['name', 'description']
     
     ordering_fields = ['name', 'price', 'created_at']
+
+    def list(self, request, *args, **kwargs):
+        # Add a log message to the list method
+        logger.info(f"Product list viewed by user: {request.user}")
+        return super().list(request, *args, **kwargs)
+    
+    def create(self, request, *args, **kwargs):
+        # Add a log message to the create method
+        logger.warning(f"Product creation attempt by user: {request.user}")
+        return super().create(request, *args, **kwargs)
