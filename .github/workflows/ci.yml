@@ -16,6 +16,8 @@ jobs:
           POSTGRES_DB: test_nexus_db
           POSTGRES_USER: test_admin
           POSTGRES_PASSWORD: test_password
+        ports:
+          - 5432:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -40,7 +42,7 @@ jobs:
         DB_NAME: "test_nexus_db"
         DB_USER: "test_admin"
         DB_PASSWORD: "test_password"
-        DB_HOST: "postgres"
+        DB_HOST: "localhost"
         DB_PORT: "5432"
       run: |
         python manage.py test
