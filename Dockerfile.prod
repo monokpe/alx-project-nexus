@@ -11,9 +11,16 @@ WORKDIR /app
 # Create a non-root user
 RUN addgroup --system app && adduser --system --group app
 
-# Install dependencies
+# Install build dependencies and postgresql-client
+RUN apt-get update && apt-get install -y build-essential postgresql-client && rm -rf /var/lib/apt/lists/*
+
+# Copy the requirements file and install dependencies
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the entrypoint script and make it executable
+COPY ./entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 
 # Copy the rest of the application's code into the container
 COPY . /app/
