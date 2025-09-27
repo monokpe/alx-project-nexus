@@ -25,3 +25,6 @@ jobs:
         DEBUG: "False"
       run: |
         python manage.py test
+    - name: List files after test
+      if: always()
+      run: ls -R
