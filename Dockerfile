@@ -1,6 +1,6 @@
 # --- Builder Stage ---
 # This stage installs dependencies
-FROM python:3.11-slim-buster AS builder
+FROM python:3.11-slim-bookworm AS builder
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
@@ -17,7 +17,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # --- Final Stage ---
 # This stage builds the final, smaller production image
-FROM python:3.11-slim-buster
+FROM python:3.11-slim-bookworm
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 WORKDIR /app
