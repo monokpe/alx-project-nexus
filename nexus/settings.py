@@ -261,41 +261,73 @@ if 'test' in sys.argv or os.environ.get('GITHUB_ACTIONS'):
     REST_FRAMEWORK['DEFAULT_THROTTLE_CLASSES'] = []
     REST_FRAMEWORK['DEFAULT_THROTTLE_RATES'] = {}
 
-# Logging Configuration
+# --- Logging Configuration ---
+# Create a 'logs' directory if it doesn't exist
+LOGS_DIR = os.path.join(BASE_DIR, 'logs')
+os.makedirs(LOGS_DIR, exist_ok=True)
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    
+    # Define the formatters
     'formatters': {
         'verbose': {
-            'format': '{levelname} {asctime} {module} {message}',
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
             'style': '{',
         },
         'simple': {
             'format': '{levelname} {message}',
             'style': '{',
         },
+        'json': {
+            '()': 'pythonjsonlogger.jsonlogger.JsonFormatter',
+            'format': '%(asctime)s %(name)s %(levelname)s %(module)s %(lineno)d %(message)s',
+        },
     },
+    
+    # Define the handlers (where logs go)
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
             'formatter': 'simple',
+            'level': 'INFO',
         },
         'file': {
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': BASE_DIR / 'logs/debug.log',
+            'filename': os.path.join(LOGS_DIR, 'nexus.log'),
             'maxBytes': 1024 * 1024 * 5,  # 5 MB
-            'backupCount': 2,
+            'backupCount': 5,
             'formatter': 'verbose',
+            'level': 'INFO',
+        },
+        'json_file': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGS_DIR, 'nexus.json.log'),
+            'maxBytes': 1024 * 1024 * 5,  # 5 MB
+            'backupCount': 5,
+            'formatter': 'json',
+            'level': 'INFO',
         },
     },
-    'root': {
-        'handlers': ['console', 'file'],
-        'level': 'INFO',  # Default level
-    },
+    
+    # Define the loggers (what to log)
     'loggers': {
+        # Root logger: catches all logs
+        '': {
+            'handlers': ['console', 'json_file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        # Django's own loggers
         'django': {
-            'handlers': ['console', 'file'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'handlers': ['console', 'json_file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['json_file'],
+            'level': 'WARNING', # Only log failed requests (4xx and 5xx)
             'propagate': False,
         },
     },
