@@ -1,0 +1,52 @@
+# render.yaml
+
+services:
+  # 1. The PostgreSQL Database Service
+  - name: nexus-db
+    type: psql
+    psqlVersion: 15
+    plan: free # Use the free plan
+
+  # 2. The Redis Cache Service
+  - name: nexus-redis
+    type: redis
+    plan: free # Use the free plan
+
+  # 3. The Django Web Service
+  - name: nexus-web
+    type: web
+    plan: free # Use the free plan
+    runtime: docker
+    # This tells Render where your Dockerfile is. It's the project root.
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/v1/products/ # A simple path to check if the app is alive
+    envVars:
+      # --- Environment Variables ---
+      # Pulls the database connection string from the 'nexus-db' service we defined
+      - key: DB_URL
+        fromService:
+          type: psql
+          name: nexus-db
+          property: connectionString
+      # Pulls the Redis connection string from the 'nexus-redis' service
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: nexus-redis
+          property: connectionString
+
+      # --- Your application secrets ---
+      # You will set these values in the Render dashboard for security
+      - key: SECRET_KEY
+        sync: false
+      - key: DEBUG
+        value: 0
+      - key: ALLOWED_HOSTS
+        # Render provides the domain, e.g., project-nexus.onrender.com
+        value: .onrender.com
+
+    # --- Initial Commands ---
+    # These commands run once when the service is first created
+    preDeployCommand: "pip install -r requirements.txt"
+    buildCommand: "python manage.py collectstatic --no-input"
+    migrateCommand: "python manage.py migrate"

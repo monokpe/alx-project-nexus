@@ -15,8 +15,13 @@ import sys
 from dotenv import load_dotenv
 from datetime import timedelta
 from pathlib import Path
+import dj_database_url
+from environ import Env
 
 load_dotenv()
+
+# Initialize django-environ
+env = Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,15 +43,8 @@ if not SECRET_KEY:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DJANGO_ENV") != "production"
 
-ALLOWED_HOSTS = []
-
-if not DEBUG:
-    # In production, ALLOWED_HOSTS must be set.
-    # We expect a comma-separated string, e.g., "yourdomain.com,www.yourdomain.com"
-    allowed_hosts_env = os.getenv("ALLOWED_HOSTS")
-    if not allowed_hosts_env:
-        raise ValueError("ALLOWED_HOSTS environment variable must be set in production")
-    ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_env.split(",")]
+# Update ALLOWED_HOSTS
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1'])
 
     # Production security settings
     SECURE_SSL_REDIRECT = True
@@ -115,23 +113,17 @@ WSGI_APPLICATION = "nexus.wsgi.application"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("DB_NAME"),
-        "USER": os.getenv("DB_USER"),
-        "PASSWORD": os.getenv("DB_PASSWORD"),
-        "HOST": os.getenv("DB_HOST"),
-        "PORT": os.getenv("DB_PORT"),
-    }
+    'default': dj_database_url.config(
+        default=env('DB_URL', default=f"postgres://{os.environ.get('POSTGRES_USER')}:{os.environ.get('POSTGRES_PASSWORD')}@localhost/nexus_db")
+    )
 }
 
 
 
-REDIS_HOST = os.environ.get('REDIS_HOST', '127.0.0.1')
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": f"redis://{REDIS_HOST}:6379/1",
+        "LOCATION": env('REDIS_URL', default='redis://127.0.0.1:6379/1'),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
