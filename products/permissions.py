@@ -1,15 +1,21 @@
-from rest_framework import permissions
+# products/permissions.py
 
-class IsAdminOrReadOnly(permissions.BasePermission):
+from rest_framework.permissions import BasePermission, SAFE_METHODS
+
+class IsAdminOrReadOnly(BasePermission):
     """
-    Custom permission to only allow admin users to edit objects.
+    Custom permission to only allow admin users to edit objects,
+    but allow anyone to view them.
     """
 
     def has_permission(self, request, view):
-        # Read permissions are allowed to any request,
-        # so we'll always allow GET, HEAD or OPTIONS requests.
-        if request.method in permissions.SAFE_METHODS:
+        # Allow all GET, HEAD, or OPTIONS requests.
+        if request.method in SAFE_METHODS:
             return True
 
-        # Write permissions are only allowed to admin users.
-        return request.user and request.user.is_staff
+        # Deny write permissions for non-authenticated users.
+        if not request.user or not request.user.is_authenticated:
+            return False
+
+        # Allow write permissions only if the user is a staff member.
+        return request.user.is_staff
