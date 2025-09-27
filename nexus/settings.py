@@ -125,24 +125,7 @@ DATABASES = {
     }
 }
 
-if 'test' in sys.argv or os.environ.get('GITHUB_ACTIONS'):
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
 
-    # Use dummy cache for testing
-    CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-        }
-    }
-
-    # Disable throttling for testing
-    REST_FRAMEWORK['DEFAULT_THROTTLE_CLASSES'] = []
-    REST_FRAMEWORK['DEFAULT_THROTTLE_RATES'] = {}
 
 REDIS_HOST = os.environ.get('REDIS_HOST', '127.0.0.1')
 CACHES = {
@@ -258,3 +241,22 @@ This API uses JWT (JSON Web Tokens) for authentication. To access protected endp
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
 }
+
+if 'test' in sys.argv or os.environ.get('GITHUB_ACTIONS'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
+    # Use dummy cache for testing
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        }
+    }
+
+    # Disable throttling for testing
+    REST_FRAMEWORK['DEFAULT_THROTTLE_CLASSES'] = []
+    REST_FRAMEWORK['DEFAULT_THROTTLE_RATES'] = {}
