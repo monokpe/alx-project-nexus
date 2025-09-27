@@ -40,7 +40,7 @@ jobs:
         DB_NAME: "test_nexus_db"
         DB_USER: "test_admin"
         DB_PASSWORD: "test_password"
-        DB_HOST: "localhost"
+        DB_HOST: "postgres"
         DB_PORT: "5432"
       run: |
         python manage.py test
