@@ -10,6 +10,7 @@ services:
   - name: nexus-redis
     type: redis
     plan: free # Use the free plan
+    ipAllowList: [] # Allow all internal
 
   # 3. The Django Web Service
   - name: nexus-web
@@ -24,6 +25,7 @@ services:
       # Pulls the database connection string from the 'nexus-db' service we defined
       - key: DB_URL
         fromService:
+          type: psql
           name: nexus-db
           property: connectionString
       # Pulls the Redis connection string from the 'nexus-redis' service
