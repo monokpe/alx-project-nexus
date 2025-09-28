@@ -113,9 +113,7 @@ WSGI_APPLICATION = "nexus.wsgi.application"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=env('DB_URL', default=f"postgres://{env('POSTGRES_USER')}:{env('POSTGRES_PASSWORD')}@{env('DB_HOST')}/{env('POSTGRES_DB')}")
-    )
+    'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
 }
 
 
