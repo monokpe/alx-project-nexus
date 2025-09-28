@@ -47,6 +47,11 @@ python manage.py migrate products
 python manage.py migrate
 echo "--- Finished applying database migrations ---"
 
+# Seed the database with initial data
+echo "--- Seeding database ---"
+python manage.py seed_data
+echo "--- Finished seeding database ---"
+
 # Collect static files
 echo "--- Collecting static files ---"
 python manage.py collectstatic --no-input
