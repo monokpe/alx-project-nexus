@@ -38,6 +38,12 @@ echo "--- Database is ready ---"
 
 # Run database migrations
 echo "--- Applying database migrations ---"
+python manage.py migrate auth
+python manage.py migrate contenttypes
+python manage.py migrate sessions
+python manage.py migrate admin
+python manage.py migrate users
+python manage.py migrate products
 python manage.py migrate
 echo "--- Finished applying database migrations ---"
 
