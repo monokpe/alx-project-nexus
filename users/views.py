@@ -24,6 +24,7 @@ class ProtectedView(APIView):
     
     Requires a valid JWT in the `Authorization: Bearer <token>` header.
     """
+    serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
