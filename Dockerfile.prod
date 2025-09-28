@@ -34,5 +34,6 @@ RUN chown -R app:app /app
 # Switch to the non-root user
 USER app
 
-# Set the command to run the application
+# Set the entrypoint and command to run the application
+ENTRYPOINT ["/app/entrypoint.sh"]
 CMD ["gunicorn", "nexus.wsgi:application", "--bind", "0.0.0.0:8000"]
