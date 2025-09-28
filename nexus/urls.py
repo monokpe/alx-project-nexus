@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic.base import RedirectView
 
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
@@ -29,6 +30,7 @@ from drf_spectacular.views import (
 )
 
 urlpatterns = [
+    path('', RedirectView.as_view(url='/api/schema/swagger-ui/', permanent=True)),
     path('admin/', admin.site.urls),
     path('api/v1/users/', include('users.urls')),
     path('api/v1/', include('products.urls')),
