@@ -1,8 +1,30 @@
 #!/bin/sh
 
+# Exit immediately if a command exits with a non-zero status.
+set -e
+
+# Function to parse DATABASE_URL and export PG* variables
+parse_database_url() {
+  if [ -n "$DATABASE_URL" ]; then
+    eval $(python -c "
+import os
+from urllib.parse import urlparse
+
+result = urlparse(os.environ['DATABASE_URL'])
+print(f'export PGHOST={result.hostname}')
+print(f'export PGPORT={result.port}')
+print(f'export PGUSER={result.username}')
+print(f'export PGPASSWORD={result.password}')
+print(f'export PGDATABASE={result.path[1:]}')
+")
+  fi
+}
+
+# Parse DATABASE_URL to set PG* environment variables
+parse_database_url
+
 # Wait for the database to be ready
-# Use environment variables from docker-compose
-until pg_isready -h db -p 5432 -U "${POSTGRES_USER}" -d "${POSTGRES_DB}"; do
+until pg_isready; do
   echo "Waiting for database..."
   sleep 2
 done
