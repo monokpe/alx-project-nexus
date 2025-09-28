@@ -43,8 +43,4 @@ services:
         # Render provides the domain, e.g., project-nexus.onrender.com
         value: .onrender.com
 
-    # --- Initial Commands ---
-    # These commands run once when the service is first created
-    preDeployCommand: "pip install -r requirements.txt"
-    buildCommand: "python manage.py collectstatic --no-input"
-    migrateCommand: "python manage.py migrate"
+    buildCommand: "python manage.py migrate && python manage.py collectstatic --no-input"
