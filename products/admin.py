@@ -18,8 +18,20 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'price', 'stock', 'created_at')
     list_filter = ('category', 'created_at')
     search_fields = ('name', 'description')
-    # This is a performance optimization for the list view
     list_select_related = ('category',)
-    # Makes date fields read-only
     readonly_fields = ('created_at', 'updated_at')
+
+    def mark_as_in_stock(self, request, queryset):
+        queryset.update(stock=100)
+        self.message_user(request, "Selected products have been marked as in stock.")
+
+    mark_as_in_stock.short_description = "Mark selected products as in stock (100 units)"
+
+    def mark_as_out_of_stock(self, request, queryset):
+        queryset.update(stock=0)
+        self.message_user(request, "Selected products have been marked as out of stock.")
+
+    mark_as_out_of_stock.short_description = "Mark selected products as out of stock"
+
+    actions = [mark_as_in_stock, mark_as_out_of_stock]
     
