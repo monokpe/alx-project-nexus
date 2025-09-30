@@ -69,3 +69,15 @@ class ProductViewSet(CacheResponseMixin, viewsets.ModelViewSet):
         # Add a log message to the create method
         logger.warning(f"Product creation attempt by user: {request.user}")
         return super().create(request, *args, **kwargs)
+
+from django.views.generic import TemplateView
+
+class ProductCategoryChartView(TemplateView):
+    template_name = 'products/chart.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['labels'] = [category.name for category in Category.objects.all()]
+        context['data'] = [category.products.count() for category in Category.objects.all()]
+        context['provider'] = "Products"
+        return context
