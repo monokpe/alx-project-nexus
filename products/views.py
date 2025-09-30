@@ -1,6 +1,7 @@
 import logging # Import the logging library at the top
 from rest_framework import viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
+from django.views.generic import TemplateView
 from .models import Category, Product
 from .serializers import CategorySerializer, ProductSerializer
 from .permissions import IsAdminOrReadOnly
