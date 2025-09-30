@@ -70,7 +70,7 @@ class ProductViewSet(CacheResponseMixin, viewsets.ModelViewSet):
         logger.warning(f"Product creation attempt by user: {request.user}")
         return super().create(request, *args, **kwargs)
 
-from django.views.generic import TemplateView
+
 
 class ProductCategoryChartView(TemplateView):
     template_name = 'products/chart.html'
@@ -79,5 +79,7 @@ class ProductCategoryChartView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['labels'] = [category.name for category in Category.objects.all()]
         context['data'] = [category.products.count() for category in Category.objects.all()]
+        context['provider'] = "Products"
+        return context in Category.objects.all()]
         context['provider'] = "Products"
         return context
