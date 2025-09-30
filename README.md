@@ -1,46 +1,47 @@
-# Project Nexus API
-
-[![CI](https://github.com/monokpe/alx-project-nexus/actions/workflows/ci.yml/badge.svg)](https://github.com/monokpe/alx-project-nexus/actions/workflows/ci.yml)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/monokpe/alx-project-nexus/blob/main/LICENSE)
-
-A robust and scalable e-commerce backend built with Django and the Django REST Framework.
-
-## What's New
-
-- **Admin Panel Overhaul**: The admin panel has been significantly improved with a modern UI, custom actions, advanced filtering, data visualization, and model history.
+# Project Nexus: A Production-Ready E-commerce Backend
 
 ## Overview
 
-Project Nexus provides a comprehensive set of RESTful API endpoints to power an e-commerce platform. It includes functionality for product management, user authentication with JWT, and more. The project is fully containerized with Docker for consistent development and production environments.
+This project is a high-performance, scalable, and secure backend system for an e-commerce product catalog. It is built with Django, containerized with Docker, and follows modern best practices including automated testing, CI/CD, and comprehensive API documentation.
 
-### Key Features
+## Key Features
 
-*   **User Authentication**: Secure user registration and login using JSON Web Tokens (JWT).
-*   **Product Management**: Full CRUD (Create, Read, Update, Delete) operations for products.
-*   **Interactive API Documentation**: Explore and test the API live using the automatically generated Swagger/OpenAPI interface.
-*   **Containerized Environment**: Uses Docker and Docker Compose for easy and reliable local development.
-*   **CI/CD Pipeline**: Includes a GitHub Actions workflow for automated linting and testing.
-
-### Admin Panel Improvements
-
-*   **Custom Admin Actions**: Bulk update product stock to "in stock" or "out of stock" with a single click.
-*   **Modern UI**: A modern and responsive admin theme using `django-jazzmin`.
-*   **Advanced Filtering**: Filter products by price range.
-*   **Data Visualization**: A chart showing the number of products per category.
-*   **Model History/Reversion**: Version control for product and category models, allowing you to see a history of changes and revert to a previous version if needed.
+-   **Full CRUD APIs:** For Products, Categories, and User Management.
+-   **Secure JWT Authentication:** Stateless authentication using JSON Web Tokens.
+-   **Advanced API Functionality:**
+    -   Powerful filtering by category and price range.
+    -   Full-text search across product names and descriptions.
+    -   Sorting by multiple fields (name, price, etc.).
+    -   Efficient pagination for large datasets.
+-   **Role-Based Permissions:** Read-only access for all users, but write access is restricted to Admin/Staff users.
+-   **High Performance:** API responses for the product catalog are cached using **Redis** to minimize database load.
+-   **Security:** **Rate limiting** is implemented to protect against brute-force attacks and API abuse.
+-   **Live API Documentation:** Interactive Swagger UI for easy API exploration and testing.
+-   **Automated Testing:** Comprehensive unit and integration test suite.
+-   **CI/CD Pipeline:** GitHub Actions automatically tests every push and pull request to the main branch.
+-   **Containerized Environment:** Fully containerized with Docker and Docker Compose for consistent development and production environments.
 
 ## Technology Stack
 
-*   **Backend**: Django, Django REST Framework
-*   **Database**: PostgreSQL
-*   **Cache**: Redis
-*   **API Documentation**: drf-spectacular (Swagger UI)
-*   **Server**: Gunicorn
-*   **Containerization**: Docker, Docker Compose
+-   **Backend:** Django, Django REST Framework
+-   **Database:** PostgreSQL
+-   **Caching:** Redis
+-   **Web Server:** Gunicorn & WhiteNoise
+-   **Deployment:** Docker, Docker Compose
+-   **CI/CD:** GitHub Actions
+-   **API Documentation:** drf-spectacular (Swagger UI)
 
-## Getting Started: Local Development
+---
 
-This project is fully containerized. The only prerequisites are having **Docker** and **Docker Compose** installed.
+## Getting Started
+
+### Prerequisites
+
+-   Python 3.11+
+-   Docker and Docker Compose
+-   An `.env` file (see `.env.example`)
+
+### 1. Local Development Setup (Without Docker)
 
 1.  **Clone the repository:**
     ```bash
@@ -48,52 +49,92 @@ This project is fully containerized. The only prerequisites are having **Docker*
     cd alx-project-nexus
     ```
 
-2.  **Set up environment variables:**
-    Create a `.env` file by copying the example file. The default values are configured for the local Docker setup.
+2.  **Create and activate a virtual environment:**
+    ```bash
+    python -m venv venv
+    source venv/bin/activate
+    # On Windows: venv\Scripts\activate
+    ```
+
+3.  **Install dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4.  **Set up environment variables:**
+    Copy the example `.env.example` file to `.env` and fill in your database credentials and a new `SECRET_KEY`.
     ```bash
     cp .env.example .env
     ```
 
-3.  **Build and Run the Containers:**
+5.  **Run database migrations:**
     ```bash
-    docker-compose up --build
+    python manage.py migrate
     ```
-    This command will build the Docker images, start the Django, PostgreSQL, and Redis services, and run database migrations automatically. The web application will be available at `http://localhost:8000`.
+
+6.  **Populate the database with sample data (Optional):**
+    ```bash
+    python manage.py seed_db --number 50
+    ```
+
+7.  **Run the development server:**
+    ```bash
+    python manage.py runserver
+    ```
+    The API will be available at `http://127.0.0.1:8000`.
+
+### 2. Docker Setup (Recommended)
+
+This is the easiest way to run the entire application stack, including PostgreSQL and Redis.
+
+1.  **Clone the repository and create your `.env` file** as described above.
+
+2.  **Build and run the containers:**
+    ```bash
+    docker-compose up --build -d
+    ```
+
+3.  **Run database migrations:**
+    ```bash
+    docker-compose exec web python manage.py migrate
+    ```
+
+4.  **Populate the database (Optional):**
+    ```bash
+    docker-compose exec web python manage.py seed_db --number 50
+    ```
+    The application will be running and accessible at `http://127.0.0.1:8000`.
+
+---
 
 ## API Documentation
 
-Once the application is running, you can access the interactive API documentation in your browser. This is the easiest way to explore and test all the available endpoints.
+Once the application is running, the interactive Swagger UI documentation is available at:
+**`http://127.0.0.1:8000/api/schema/swagger-ui/`**
 
-*   **Swagger UI:** [http://localhost:8000/api/schema/swagger-ui/](http://localhost:8000/api/schema/swagger-ui/)
+### API Endpoints Overview
 
-The root of the site (`/`) will automatically redirect you to this documentation page.
+| Method | Endpoint                          | Description                               |
+| :----- | :-------------------------------- | :---------------------------------------- |
+| `POST` | `/api/v1/users/register/`         | Register a new user.                      |
+| `POST` | `/api/v1/token/`                  | Obtain a JWT access/refresh token pair.   |
+| `GET`  | `/api/v1/products/`               | List all products (with filters).         |
+| `POST` | `/api/v1/products/`               | Create a new product (Admin only).        |
+| `GET`  | `/api/v1/products/{id}/`          | Retrieve a single product.                |
+| `PUT`  | `/api/v1/products/{id}/`          | Update a product (Admin only).            |
+| `GET`  | `/api/v1/categories/`             | List all categories.                      |
+| `POST` | `/api/v1/categories/`             | Create a new category (Admin only).       |
 
-## Deployment
+---
 
-This application is deployed on **Render** for the web service, with the database and cache hosted on **Aiven**.
+## Running Tests
 
-### Render (Web Service)
+To run the automated test suite, use the following command:
 
-The web service is set up manually in the Render dashboard. It requires the following environment variables to be set:
-
-*   `SECRET_KEY`: A unique, private key.
-*   `DEBUG`: Set to `0` for production.
-*   `ALLOWED_HOSTS`: The `.onrender.com` domain for your service.
-*   `DB_URL`: The **Service URI** for your Aiven PostgreSQL database.
-*   `REDIS_URL`: The **Service URI** for your Aiven Valkey (Redis) instance.
-
-### Aiven (Database & Cache)
-
-The free tier on Aiven is used to provide the PostgreSQL and Redis (Valkey) services.
-
-1.  Sign up for a free account on [Aiven.io](https://aiven.io/).
-2.  Create a new **PostgreSQL** service on the free plan.
-3.  Create a new **Valkey** (Redis-compatible) service on the free plan.
-4.  For each service, find its **Connection information** and copy the **Service URI**. These URIs are the values you will use for the `DB_URL` and `REDIS_URL` environment variables in Render.
-
-## CI/CD
-
-This repository uses **GitHub Actions** for Continuous Integration. The workflow is defined in `.github/workflows/ci.yml` and automatically runs the following checks on every push or pull request to the `main` branch:
-*   Installs dependencies
-*   Lints the code with `ruff`
-*   Runs the full test suite using `python manage.py test`
+```bash
+python manage.py test
+```
+Or when using Docker:
+```bash
+docker-compose exec web python manage.py test
+```
