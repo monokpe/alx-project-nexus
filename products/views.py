@@ -80,6 +80,4 @@ class ProductCategoryChartView(TemplateView):
         context['labels'] = [category.name for category in Category.objects.all()]
         context['data'] = [category.products.count() for category in Category.objects.all()]
         context['provider'] = "Products"
-        return context in Category.objects.all()]
-        context['provider'] = "Products"
         return context
