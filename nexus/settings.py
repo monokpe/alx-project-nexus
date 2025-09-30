@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     "rest_framework_extensions",
     "chartjs",
     "reversion",
+    "rangefilter",
     # Local apps
     "users",
     "products",
