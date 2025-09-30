@@ -6,7 +6,7 @@ from .serializers import CategorySerializer, ProductSerializer
 from .permissions import IsAdminOrReadOnly
 
 # Import the caching mixin
-from rest_framework_extensions.cache.mixins import CacheResponseMixin
+
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -24,7 +24,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     permission_classes = [IsAdminOrReadOnly]
 
-class ProductViewSet(CacheResponseMixin, viewsets.ModelViewSet):
+class ProductViewSet(viewsets.ModelViewSet):
     """
     API endpoint for managing products.
     
