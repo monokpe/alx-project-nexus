@@ -21,3 +21,4 @@ Jinja2==3.1.6
 django-jazzmin==3.0.1
 django-admin-rangefilter==0.13.3
 django-chartjs==2.3.0
+django-reversion==6.0.0

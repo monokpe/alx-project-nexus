@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "rest_framework_extensions",
     "chartjs",
+    "reversion",
     # Local apps
     "users",
     "products",
@@ -116,6 +117,7 @@ WSGI_APPLICATION = "nexus.wsgi.application"
 
 DATABASES = {
     'default': dj_database_url.config(
+        default=f'sqlite:///{BASE_DIR}/db.sqlite3',
         conn_max_age=600, 
         ssl_require=os.getenv('DJANGO_ENV') == 'production'
     )

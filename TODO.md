@@ -2,4 +2,4 @@
 - [x] **Modernize the UI**: Improve the visual appearance of the admin panel with a custom theme.
 - [x] **Advanced Filtering**: Add advanced filtering options to the admin panel.
 - [x] **Data Visualization**: Integrate data visualization into the admin dashboard.
-- [ ] **Model History/Reversion**: Implement a version control system for models.
+- [x] **Model History/Reversion**: Implement a version control system for models.

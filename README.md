@@ -5,6 +5,10 @@
 
 A robust and scalable e-commerce backend built with Django and the Django REST Framework.
 
+## What's New
+
+- **Admin Panel Overhaul**: The admin panel has been significantly improved with a modern UI, custom actions, advanced filtering, data visualization, and model history.
+
 ## Overview
 
 Project Nexus provides a comprehensive set of RESTful API endpoints to power an e-commerce platform. It includes functionality for product management, user authentication with JWT, and more. The project is fully containerized with Docker for consistent development and production environments.
@@ -16,6 +20,14 @@ Project Nexus provides a comprehensive set of RESTful API endpoints to power an 
 *   **Interactive API Documentation**: Explore and test the API live using the automatically generated Swagger/OpenAPI interface.
 *   **Containerized Environment**: Uses Docker and Docker Compose for easy and reliable local development.
 *   **CI/CD Pipeline**: Includes a GitHub Actions workflow for automated linting and testing.
+
+### Admin Panel Improvements
+
+*   **Custom Admin Actions**: Bulk update product stock to "in stock" or "out of stock" with a single click.
+*   **Modern UI**: A modern and responsive admin theme using `django-jazzmin`.
+*   **Advanced Filtering**: Filter products by price range.
+*   **Data Visualization**: A chart showing the number of products per category.
+*   **Model History/Reversion**: Version control for product and category models, allowing you to see a history of changes and revert to a previous version if needed.
 
 ## Technology Stack
 
