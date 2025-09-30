@@ -4,12 +4,18 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .models import Category, Product
 from .serializers import CategorySerializer, ProductSerializer
 from .permissions import IsAdminOrReadOnly
+from rest_framework_extensions.cache.mixins import CacheResponseMixin
+from rest_framework_extensions.key_constructor.constructors import DefaultListKeyConstructor
+from rest_framework_extensions.key_constructor import bits
 
 # Import the caching mixin
 
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
+
+class CustomListKeyConstructor(DefaultListKeyConstructor):
+    query_params = bits.QueryParamsKeyBit()
 
 class CategoryViewSet(viewsets.ModelViewSet):
     """
@@ -24,7 +30,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     permission_classes = [IsAdminOrReadOnly]
 
-class ProductViewSet(viewsets.ModelViewSet):
+class ProductViewSet(CacheResponseMixin, viewsets.ModelViewSet):
     """
     API endpoint for managing products.
     
@@ -42,6 +48,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all().select_related('category')
     serializer_class = ProductSerializer
     permission_classes = [IsAdminOrReadOnly]
+    list_cache_key_func = CustomListKeyConstructor()
     
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = {
