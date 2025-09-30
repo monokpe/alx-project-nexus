@@ -6,6 +6,7 @@ from .serializers import CategorySerializer, ProductSerializer
 from .permissions import IsAdminOrReadOnly
 
 # Import the caching mixin
+from rest_framework_extensions.cache.decorators import cache_response
 from rest_framework_extensions.cache.mixins import CacheResponseMixin
 
 # Get an instance of a logger
@@ -53,6 +54,7 @@ class ProductViewSet(CacheResponseMixin, viewsets.ModelViewSet):
     
     ordering_fields = ['name', 'price', 'created_at']
 
+    @cache_response()
     def list(self, request, *args, **kwargs):
         # Add a log message to the list method
         logger.info(f"Product list viewed by user: {request.user}")
