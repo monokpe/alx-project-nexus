@@ -300,15 +300,51 @@ JAZZMIN_SETTINGS = {
     "order_with_respect_to": ["auth", "products", "users"],
 
     # Custom links to append to app groups, keyed on app name
-    "custom_links": {
-        "products": [{
-            "name": "Product Stats", 
-            "url": "product_category_chart", 
-            "icon": "fas fa-chart-bar",
-            "permissions": ["products.view_product"]
-        }]
-    },
-
+        "custom_links": {
+            "products": [
+                {
+                    "name": "Product Stats",
+                    "url": "product_category_chart",
+                    "icon": "fas fa-chart-bar",
+                    "permissions": ["products.view_product"]
+                },
+                {
+                    "name": "Electronics",
+                    "url": "/admin/products/product/?category__slug__exact=electronics",
+                    "icon": "fas fa-tag"
+                },
+                {
+                    "name": "Books",
+                    "url": "/admin/products/product/?category__slug__exact=books",
+                    "icon": "fas fa-tag"
+                },
+                {
+                    "name": "Clothing",
+                    "url": "/admin/products/product/?category__slug__exact=clothing",
+                    "icon": "fas fa-tag"
+                },
+                {
+                    "name": "Home & Garden",
+                    "url": "/admin/products/product/?category__slug__exact=home-garden",
+                    "icon": "fas fa-tag"
+                },
+                {
+                    "name": "Sports & Outdoors",
+                    "url": "/admin/products/product/?category__slug__exact=sports-outdoors",
+                    "icon": "fas fa-tag"
+                },
+                {
+                    "name": "Toys & Games",
+                    "url": "/admin/products/product/?category__slug__exact=toys-games",
+                    "icon": "fas fa-tag"
+                },
+                {
+                    "name": "Health & Beauty",
+                    "url": "/admin/products/product/?category__slug__exact=health-beauty",
+                    "icon": "fas fa-tag"
+                }
+            ]
+        },
     # Custom icons for side menu apps/models See https://fontawesome.com/icons?d=gallery&m=free&v=5.0.0,5.0.1,5.0.10,5.0.11,5.0.12,5.0.13,5.0.2,5.0.3,5.0.4,5.0.5,5.0.6,5.0.7,5.0.8,5.0.9,5.1.0,5.1.1,5.2.0,5.3.0,5.3.1,5.4.0,5.4.1,5.4.2,5.13.0,5.12.0,5.11.2,5.11.1,5.10.0,5.9.0,5.8.2,5.8.1,5.7.2,5.7.1,5.7.0,5.6.3,5.5.0,5.4.2
     # for the full list of 5.13.0 free icons
     "icons": {

@@ -1,5 +1,0 @@
-- [x] **Custom Admin Actions**: Add custom actions to the admin panel for bulk updates.
-- [x] **Modernize the UI**: Improve the visual appearance of the admin panel with a custom theme.
-- [x] **Advanced Filtering**: Add advanced filtering options to the admin panel.
-- [x] **Data Visualization**: Integrate data visualization into the admin dashboard.
-- [x] **Model History/Reversion**: Implement a version control system for models.
