@@ -73,6 +73,15 @@ class ProductViewSet(CacheResponseMixin, viewsets.ModelViewSet):
 
 
 
+from django.shortcuts import redirect
+from django.urls import reverse
+
+def redirect_to_products_by_category(request, category_slug):
+    category = Category.objects.get(slug=category_slug)
+    url = reverse('admin:products_product_changelist')
+    return redirect(f'{url}?category__id__exact={category.id}')
+
+
 class ProductCategoryChartView(TemplateView):
     template_name = 'products/chart.html'
 
