@@ -11,7 +11,6 @@ from rest_framework_extensions.cache.mixins import CacheResponseMixin
 from rest_framework_extensions.key_constructor.constructors import DefaultListKeyConstructor
 from rest_framework_extensions.key_constructor import bits
 
-# Import the caching mixin
 
 
 # Get an instance of a logger
