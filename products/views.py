@@ -2,6 +2,8 @@ import logging # Import the logging library at the top
 from rest_framework import viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from django.views.generic import TemplateView
+from django.shortcuts import redirect
+from django.urls import reverse
 from .models import Category, Product
 from .serializers import CategorySerializer, ProductSerializer
 from .permissions import IsAdminOrReadOnly
@@ -72,9 +74,6 @@ class ProductViewSet(CacheResponseMixin, viewsets.ModelViewSet):
         return super().create(request, *args, **kwargs)
 
 
-
-from django.shortcuts import redirect
-from django.urls import reverse
 
 def redirect_to_products_by_category(request, category_slug):
     category = Category.objects.get(slug=category_slug)
