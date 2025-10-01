@@ -18,6 +18,7 @@ logger = logging.getLogger(__name__)
 
 class CustomListKeyConstructor(DefaultListKeyConstructor):
     query_params = bits.QueryParamsKeyBit()
+    pagination = bits.PaginationKeyBit()
 
 class CategoryViewSet(viewsets.ModelViewSet):
     """
