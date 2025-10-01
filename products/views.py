@@ -33,7 +33,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     permission_classes = [IsAdminOrReadOnly]
 
-class ProductViewSet(CacheResponseMixin, viewsets.ModelViewSet):
+class ProductViewSet(viewsets.ModelViewSet, CacheResponseMixin):
     """
     API endpoint for managing products.
     
