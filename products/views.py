@@ -1,24 +1,16 @@
-import logging # Import the logging library at the top
+import logging
 from rest_framework import viewsets, filters
+from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from django.views.generic import TemplateView
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.core.cache import cache
 from .models import Category, Product
 from .serializers import CategorySerializer, ProductSerializer
 from .permissions import IsAdminOrReadOnly
-from rest_framework_extensions.cache.decorators import cache_response
-from rest_framework_extensions.key_constructor.constructors import DefaultListKeyConstructor
-from rest_framework_extensions.key_constructor import bits
 
-
-
-# Get an instance of a logger
 logger = logging.getLogger(__name__)
-
-class CustomListKeyConstructor(DefaultListKeyConstructor):
-    query_params = bits.QueryParamsKeyBit()
-    pagination = bits.PaginationKeyBit()
 
 class CategoryViewSet(viewsets.ModelViewSet):
     """
@@ -62,14 +54,24 @@ class ProductViewSet(viewsets.ModelViewSet):
     
     ordering_fields = ['name', 'price', 'created_at']
 
-    @cache_response(key_func=CustomListKeyConstructor())
     def list(self, request, *args, **kwargs):
-        # Add a log message to the list method
+        cache_key = request.build_absolute_uri()
+        cached_response = cache.get(cache_key)
+
+        if cached_response:
+            logger.info(f"Returning cached response for: {cache_key}")
+            return Response(cached_response)
+
+        logger.info(f"No cache found for: {cache_key}. Generating new response.")
+        response = super().list(request, *args, **kwargs)
+        
+        # Cache the response data for 1 minute (60 seconds)
+        cache.set(cache_key, response.data, timeout=60)
+        
         logger.info(f"Product list viewed by user: {request.user}")
-        return super().list(request, *args, **kwargs)
+        return response
     
     def create(self, request, *args, **kwargs):
-        # Add a log message to the create method
         logger.warning(f"Product creation attempt by user: {request.user}")
         return super().create(request, *args, **kwargs)
 
