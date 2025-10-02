@@ -89,5 +89,3 @@ dist/
 docker-compose.override.yml
 .dockerignore
 
-# LLM context file
-llm.txt

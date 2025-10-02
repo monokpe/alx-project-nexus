@@ -7,7 +7,7 @@ from django.urls import reverse
 from .models import Category, Product
 from .serializers import CategorySerializer, ProductSerializer
 from .permissions import IsAdminOrReadOnly
-from rest_framework_extensions.cache.mixins import CacheResponseMixin
+from rest_framework_extensions.cache.decorators import cache_response
 from rest_framework_extensions.key_constructor.constructors import DefaultListKeyConstructor
 from rest_framework_extensions.key_constructor import bits
 
@@ -33,7 +33,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     permission_classes = [IsAdminOrReadOnly]
 
-class ProductViewSet(viewsets.ModelViewSet, CacheResponseMixin):
+class ProductViewSet(viewsets.ModelViewSet):
     """
     API endpoint for managing products.
     
@@ -51,7 +51,6 @@ class ProductViewSet(viewsets.ModelViewSet, CacheResponseMixin):
     queryset = Product.objects.all().select_related('category')
     serializer_class = ProductSerializer
     permission_classes = [IsAdminOrReadOnly]
-    list_cache_key_func = CustomListKeyConstructor()
     
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = {
@@ -63,6 +62,7 @@ class ProductViewSet(viewsets.ModelViewSet, CacheResponseMixin):
     
     ordering_fields = ['name', 'price', 'created_at']
 
+    @cache_response(key_func=CustomListKeyConstructor())
     def list(self, request, *args, **kwargs):
         # Add a log message to the list method
         logger.info(f"Product list viewed by user: {request.user}")
