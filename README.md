@@ -2,18 +2,23 @@
 
 ## Overview
 
-This project is a high-performance, scalable, and secure backend system for an e-commerce product catalog. It is built with Django, containerized with Docker, and follows modern best practices including automated testing, CI/CD, and comprehensive API documentation.
+This project is a high-performance, scalable, and secure backend system for a full e-commerce platform. It is built with Django, containerized with Docker, and follows modern best practices including automated testing, CI/CD, and comprehensive API documentation.
 
 ## Key Features
 
 -   **Full CRUD APIs:** For Products, Categories, and User Management.
 -   **Secure JWT Authentication:** Stateless authentication using JSON Web Tokens.
+-   **User Address Management:** Allows users to manage multiple shipping addresses.
+-   **Product Reviews and Ratings:** Users can review products, with ratings automatically aggregated and updated on the product.
+-   **Shopping Cart Functionality:** Persistent shopping carts for authenticated users, with functionality to add, update, and remove items.
+-   **Order Placement:** Users can create an order directly from their shopping cart.
+-   **Stripe Payment Integration:** A complete workflow to create and process payments for orders using Stripe.
 -   **Advanced API Functionality:**
     -   Powerful filtering by category and price range.
     -   Full-text search across product names and descriptions.
     -   Sorting by multiple fields (name, price, etc.).
     -   Efficient pagination for large datasets.
--   **Role-Based Permissions:** Read-only access for all users, but write access is restricted to Admin/Staff users.
+-   **Role-Based Permissions:** Granular permissions for users, authors, and admins.
 -   **High Performance:** API responses for the product catalog are cached using **Redis** to minimize database load.
 -   **Security:** **Rate limiting** is implemented to protect against brute-force attacks and API abuse.
 -   **Live API Documentation:** Interactive Swagger UI for easy API exploration and testing.
@@ -26,6 +31,7 @@ This project is a high-performance, scalable, and secure backend system for an e
 -   **Backend:** Django, Django REST Framework
 -   **Database:** PostgreSQL
 -   **Caching:** Redis
+-   **Payments:** Stripe
 -   **Web Server:** Gunicorn & WhiteNoise
 -   **Deployment:** Docker, Docker Compose
 -   **CI/CD:** GitHub Actions
@@ -62,7 +68,7 @@ This project is a high-performance, scalable, and secure backend system for an e
     ```
 
 4.  **Set up environment variables:**
-    Copy the example `.env.example` file to `.env` and fill in your database credentials and a new `SECRET_KEY`.
+    Copy the example `.env.example` file to `.env` and fill in your credentials. You will need database credentials and your **Stripe API keys**.
     ```bash
     cp .env.example .env
     ```
@@ -114,16 +120,53 @@ Once the application is running, the interactive Swagger UI documentation is ava
 
 ### API Endpoints Overview
 
+#### Users & Auth
 | Method | Endpoint                          | Description                               |
 | :----- | :-------------------------------- | :---------------------------------------- |
 | `POST` | `/api/v1/users/register/`         | Register a new user.                      |
 | `POST` | `/api/v1/token/`                  | Obtain a JWT access/refresh token pair.   |
+
+#### Products & Categories
+| Method | Endpoint                          | Description                               |
+| :----- | :-------------------------------- | :---------------------------------------- |
 | `GET`  | `/api/v1/products/`               | List all products (with filters).         |
 | `POST` | `/api/v1/products/`               | Create a new product (Admin only).        |
 | `GET`  | `/api/v1/products/{id}/`          | Retrieve a single product.                |
-| `PUT`  | `/api/v1/products/{id}/`          | Update a product (Admin only).            |
 | `GET`  | `/api/v1/categories/`             | List all categories.                      |
-| `POST` | `/api/v1/categories/`             | Create a new category (Admin only).       |
+
+#### User Addresses
+| Method | Endpoint                          | Description                               |
+| :----- | :-------------------------------- | :---------------------------------------- |
+| `GET`  | `/api/v1/users/addresses/`        | List addresses for the current user.      |
+| `POST` | `/api/v1/users/addresses/`        | Create a new address for the user.        |
+| `GET`  | `/api/v1/users/addresses/{id}/`   | Retrieve a specific address.              |
+| `PUT`  | `/api/v1/users/addresses/{id}/`   | Update an address.                        |
+| `DEL`  | `/api/v1/users/addresses/{id}/`   | Delete an address.                        |
+
+#### Product Reviews
+| Method | Endpoint                                  | Description                               |
+| :----- | :---------------------------------------- | :---------------------------------------- |
+| `GET`  | `/api/v1/products/{product_id}/reviews/`  | List reviews for a product.               |
+| `POST` | `/api/v1/products/{product_id}/reviews/`  | Create a new review for a product.        |
+| `GET`  | `/api/v1/products/{product_id}/reviews/{id}/` | Retrieve a specific review.               |
+| `PUT`  | `/api/v1/products/{product_id}/reviews/{id}/` | Update your review (Author only).         |
+
+#### Shopping Cart
+| Method | Endpoint                          | Description                               |
+| :----- | :-------------------------------- | :---------------------------------------- |
+| `GET`  | `/api/v1/cart/`                   | Retrieve the current user's cart.         |
+| `POST` | `/api/v1/cart/items/`             | Add a product to the cart.                |
+| `PATCH`| `/api/v1/cart/items/{item_id}/`   | Update the quantity of an item.           |
+| `DEL`  | `/api/v1/cart/items/{item_id}/`   | Remove an item from the cart.             |
+
+#### Orders & Payments
+| Method | Endpoint                                  | Description                               |
+| :----- | :---------------------------------------- | :---------------------------------------- |
+| `POST` | `/api/v1/orders/`                         | Create an order from the user's cart.     |
+| `GET`  | `/api/v1/orders/`                         | List the current user's order history.    |
+| `GET`  | `/api/v1/orders/{id}/`                    | Retrieve a specific order.                |
+| `POST` | `/api/v1/orders/{id}/create_payment_intent/` | Get a Stripe client secret to pay for an order. |
+| `POST` | `/api/v1/stripe-webhook/`                 | (Internal) Listens for Stripe events.     |
 
 ---
 

@@ -18,6 +18,7 @@ from pathlib import Path
 import dj_database_url
 from environ import Env
 from django.core.management.utils import get_random_secret_key
+import stripe
 
 load_dotenv()
 
@@ -79,6 +80,9 @@ INSTALLED_APPS = [
     # Local apps
     "users",
     "products",
+    "reviews",
+    "carts",
+    "orders",
 ]
 
 MIDDLEWARE = [
@@ -211,6 +215,11 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": True,
 }
+
+# --- Stripe Configuration ---
+STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
+STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET')
 
 
 

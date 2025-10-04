@@ -23,3 +23,4 @@ django-admin-rangefilter==0.13.3
 django-chartjs==2.3.0
 django-reversion==6.0.0
 ruff==0.13.2
+stripe==9.6.0

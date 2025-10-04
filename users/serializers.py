@@ -32,4 +32,13 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
-    
+
+
+from .models import Address
+
+class AddressSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source='user.username')
+
+    class Meta:
+        model = Address
+        fields = ['id', 'user', 'street_address', 'city', 'state', 'postal_code', 'country', 'is_default']

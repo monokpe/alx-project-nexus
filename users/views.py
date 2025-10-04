@@ -36,3 +36,28 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     """
     throttle_scope = 'auth'
 
+
+from rest_framework import viewsets, permissions
+from .models import Address
+from .serializers import AddressSerializer
+from .permissions import IsOwner
+
+class AddressViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to view and edit their addresses.
+    """
+    serializer_class = AddressSerializer
+    permission_classes = [permissions.IsAuthenticated, IsOwner]
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the addresses
+        for the currently authenticated user.
+        """
+        return self.request.user.addresses.all()
+
+    def perform_create(self, serializer):
+        """
+        Automatically associate the address with the current user.
+        """
+        serializer.save(user=self.request.user)

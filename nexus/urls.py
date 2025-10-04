@@ -22,6 +22,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from users.views import CustomTokenObtainPairView
+from orders.webhook_views import StripeWebhookView
 
 from drf_spectacular.views import (
     SpectacularAPIView,
@@ -33,9 +34,13 @@ urlpatterns = [
     path('', RedirectView.as_view(url='/api/schema/swagger-ui/', permanent=True)),
     path('admin/', admin.site.urls),
     path('api/v1/users/', include('users.urls')),
-    path('products/', include('products.urls')),
+    path('api/v1/products/', include('products.urls')),
+    path('api/v1/products/<int:product_pk>/reviews/', include('reviews.urls')),
+    path('api/v1/cart/', include('carts.urls')),
+    path('api/v1/orders/', include('orders.urls')),
     path('api/v1/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/v1/stripe-webhook/', StripeWebhookView.as_view(), name='stripe-webhook'),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
