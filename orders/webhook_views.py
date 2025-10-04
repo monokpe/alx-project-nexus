@@ -1,6 +1,5 @@
 import stripe
 from django.conf import settings
-from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -26,10 +25,10 @@ class StripeWebhookView(APIView):
                 sig_header=sig_header,
                 secret=settings.STRIPE_WEBHOOK_SECRET
             )
-        except ValueError as e:
+        except ValueError:
             # Invalid payload
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        except stripe.error.SignatureVerificationError as e:
+        except stripe.error.SignatureVerificationError:
             # Invalid signature
             return Response(status=status.HTTP_400_BAD_REQUEST)
 

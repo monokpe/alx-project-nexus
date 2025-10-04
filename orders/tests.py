@@ -8,7 +8,7 @@ from unittest.mock import patch
 from products.models import Product, Category
 from users.models import Address
 from carts.models import Cart, CartItem
-from .models import Order, OrderItem
+from .models import Order
 
 class OrderAPITests(APITestCase):
     def setUp(self):

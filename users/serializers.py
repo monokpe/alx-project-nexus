@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
+from .models import Address
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
@@ -33,8 +34,6 @@ class UserSerializer(serializers.ModelSerializer):
 
         return user
 
-
-from .models import Address
 
 class AddressSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')

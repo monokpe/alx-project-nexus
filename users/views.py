@@ -1,10 +1,11 @@
 from django.contrib.auth.models import User
-from .serializers import UserSerializer
-from rest_framework import generics
+from .serializers import UserSerializer, AddressSerializer
+from rest_framework import generics, viewsets, permissions
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
+from .permissions import IsOwner
 
 
 class RegisterView(generics.CreateAPIView):
@@ -36,11 +37,6 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     """
     throttle_scope = 'auth'
 
-
-from rest_framework import viewsets, permissions
-from .models import Address
-from .serializers import AddressSerializer
-from .permissions import IsOwner
 
 class AddressViewSet(viewsets.ModelViewSet):
     """

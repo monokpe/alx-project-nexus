@@ -9,4 +9,3 @@ class ReviewsConfig(AppConfig):
         """
         Import signals when the app is ready.
         """
-        import reviews.signals
